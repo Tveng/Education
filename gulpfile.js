@@ -29,14 +29,15 @@ var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var build_dir = path.resolve(__dirname, 'public/js');
 
-var js_entry_point_path = path.resolve(__dirname, 'resources/assets/js/app.js');
+var js_entry_point_path = path.resolve(__dirname, 'resources/assets/js/app.jsx');
 
 var vendors_array = ['react', 'react/addons', 'jquery', 'react-router', 'lodash', 'flux', 'material-ui', 'react-tap-event-plugin', 'moment'];
 
 var css_files_to_bundle = [
   path.resolve(__dirname, 'resources/assets/css/font-awesome.min.css'),
   path.resolve(__dirname, 'resources/assets/css/bootstrap.min.css'),
-  path.resolve(__dirname, 'resources/assets/css/styles.css')
+  path.resolve(__dirname, 'resources/assets/css/app.css'),
+  path.resolve(__dirname, 'resources/assets/css/base.css')
 ];
 
 

@@ -3,7 +3,6 @@
     <head>
         <title>Laravel</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
         <style>
             html, body {
@@ -34,12 +33,12 @@
                 font-size: 96px;
             }
         </style>
+        <link rel="stylesheet" type="text/css" href="dev/css/bundle.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     </head>
     <body>
-        <div class="content">
-            <div class="react">
-            <script src="dev/js/app.js"></script>
-            </div>
+        <div id="react">
+           <script src="dev/js/app.js"></script>
         </div>
     </body>
 </html>
