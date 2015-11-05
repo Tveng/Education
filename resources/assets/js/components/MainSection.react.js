@@ -18,7 +18,7 @@ var TodoItem = require('./TodoItem.react');
 var MainSection = React.createClass({
 
   propTypes: {
-    allTodos: ReactPropTypes.object.isRequired,
+    allTodos: ReactPropTypes.array.isRequired,
     areAllComplete: ReactPropTypes.bool.isRequired
   },
   getDefaultProps: function(){

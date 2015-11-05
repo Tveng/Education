@@ -14,5 +14,5 @@ var TodoApp = require('./components/TodoApp.react');
 
 ReactDOM.render(
   <TodoApp />,
-  document.getElementById('react')
+  document.getElementById('todoapp')
 );

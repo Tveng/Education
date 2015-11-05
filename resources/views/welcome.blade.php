@@ -1,44 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
-
-
-        <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-        <link rel="stylesheet" type="text/css" href="dev/css/bundle.css">
-        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    </head>
-    <body>
-        <div id="react">
-           <script src="dev/js/app.js"></script>
-        </div>
-    </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flux • TodoMVC</title>
+    <link rel="stylesheet" type="text/css" href="dev/css/bundle.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+  <body>
+    <section id="todoapp"></section>
+    <footer id="info">
+      <p>Double-click to edit a todo</p>
+      <p>Created by <a href="http://facebook.com/bill.fisher.771">Bill Fisher</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+    <script src="dev/js/app.js"></script>
+  </body>
 </html>

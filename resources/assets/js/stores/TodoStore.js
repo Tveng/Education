@@ -17,7 +17,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _todos = {};
+var _todos = [];
 var loading = false;
 var loaded = false;
 /**
@@ -26,12 +26,12 @@ var loaded = false;
  */
 function getAllAjax()
 {
-  var res = $.ajax({
+  var res = [];
+  $.ajax({
     method:'get',
     url:'/todo',
     success:function(data){
       TodoActions.getTodoListSuccess(data);
-      return data;
     }
     
   });
@@ -40,28 +40,39 @@ function getAllAjax()
 
 function sendTodo(variable)
 {
+  var text = createTodoItem(variable);
   $.ajax({
     method:'post',
     url:'/todo',
-    data:variable,
+    data:text,
     success:function(data)
     {
-      console.log(data);
+      TodoActions.createTodoSuccess(data);
     }
   });
 }
 
-function create(text) {
+function sendToDelete(id)
+{
+  $.ajax({
+    method:'delete',
+    url:'/todo/' + id,
+    success:function(data)
+    {
+      TodoActions.destroyCompleted(data);
+    }
+  });
+}
+
+function createTodoItem(text) {
   // Hand waving here -- not showing how this interacts with XHR or persistent
   // server-side storage.
   // Using the current timestamp + random number in place of a real id.
-  var id = _todos.length + 1;
-  _todos[id] = {
-    complete: false,
+  _todo = {
+    complete: true,
     text: text
   };
-  sendTodo(_todos[id]);
-  console.log(_todos);
+  return _todo;
 }
 
 /**
@@ -71,7 +82,22 @@ function create(text) {
  *     updated.
  */
 function update(id, updates) {
-  _todos[id] = assign({}, _todos[id], updates);
+  _todos.map(function( item , key){
+    if (id == item.id)
+    {
+      var id_ch = _todos.indexOf(item);
+      _todos[id_ch] = assign({}, _todos[id_ch], updates);
+      $.ajax({
+        method:'put',
+        url:'todo/' + id,
+        data:_todos[id_ch],
+        success:function(data)
+        {
+          console.log('success');
+        }
+      });
+    }
+  });
 }
 
 /**
@@ -80,9 +106,9 @@ function update(id, updates) {
  *     updated.
  */
 function updateAll(updates) {
-  for (var id in _todos) {
-    update(id, updates);
-  }
+  _todos.map(function(item,key){
+    update(item.id,updates);
+  });
 }
 
 /**
@@ -90,21 +116,28 @@ function updateAll(updates) {
  * @param  {string} id
  */
 function destroy(id) {
-  delete _todos[id];
+  console.log(id);
+  // delete _todos[id];
 }
 
 /**
  * Delete all the completed TODO items.
  */
-function destroyCompleted() {
-  for (var id in _todos) {
-    console.log(_todos[complete]);
-    if (_todos[id].complete) {
-      destroy(id);
+function destroyCompleted(data) {
+  _todos.map(function(item,key){
+    if ( item.id == data.id )
+    {
+      _todos.splice(key,1);
     }
-  }
+  });
+}
+function set(data){
+  _todos = data;
 }
 
+function get(){
+  return _todos;
+}
 var TodoStore = assign({}, EventEmitter.prototype, {
 
   /**
@@ -112,11 +145,11 @@ var TodoStore = assign({}, EventEmitter.prototype, {
    * @return {boolean}
    */
   areAllComplete: function() {
-    for (var id in _todos) {
-      if (!_todos[id].complete) {
+    _todos.map(function(item,key){
+      if (!item.complete) {
         return false;
       }
-    }
+    });
     return true;
   },
 
@@ -129,7 +162,7 @@ var TodoStore = assign({}, EventEmitter.prototype, {
     if (!loaded && !loading) {
       setTimeout(TodoActions.getTodoListAttempt, 0);
     };
-    return _todos;
+    return get();
   },
 
   emitChange: function() {
@@ -164,15 +197,24 @@ AppDispatcher.register(function(action) {
     case TodoConstants.GET_TODO_LIST_SUCCESS:
       loaded = true;
       loading = false;
-      _todos = (action.data);
+      set(action.data);
       break;
 
+
     case TodoConstants.TODO_CREATE:
-      text = action.text.trim();
+      
       if (text !== '') {
-        create(text);
-        TodoStore.emitChange();
+        text = action.text.trim();
+        sendTodo(text);
       }
+      break;
+
+    case TodoConstants.TODO_CREATE_SUCCESS:
+      _todos.push(action.data);
+      break;
+
+    case TodoConstants.TODO_DELETE_SUCCESS:
+      _todos.push(action.data);
       break;
 
     case TodoConstants.TODO_TOGGLE_COMPLETE_ALL:
@@ -181,10 +223,10 @@ AppDispatcher.register(function(action) {
       } else {
         updateAll({complete: true});
       }
-      TodoStore.emitChange();
       break;
 
     case TodoConstants.TODO_UNDO_COMPLETE:
+      // console.log(action.id);
       update(action.id, {complete: false});
       
       break;
@@ -203,12 +245,11 @@ AppDispatcher.register(function(action) {
       break;
 
     case TodoConstants.TODO_DESTROY:
-      destroy(action.id);
-      
+      sendToDelete(action.id);
       break;
 
     case TodoConstants.TODO_DESTROY_COMPLETED:
-      destroyCompleted();
+      destroyCompleted(action.data);
       
       break;
 

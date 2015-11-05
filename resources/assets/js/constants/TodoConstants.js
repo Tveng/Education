@@ -20,5 +20,8 @@ module.exports = keyMirror({
   TODO_UNDO_COMPLETE: null,
   TODO_UPDATE_TEXT: null,
   GET_TODO_LIST_ATTEMP:null,
-  GET_TODO_LIST_SUCCESS:null
+  GET_TODO_LIST_SUCCESS:null,
+  TODO_CREATE_ATTEMPT:null,
+  TODO_CREATE_SUCCESS:null,
+  TODO_DELETE_SUCCESS:null
 });

@@ -42,7 +42,8 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        Todo::create($request->all());
+        $data = Todo::create($request->all());
+        return response()->json($data);
     }
 
     /**
@@ -76,7 +77,10 @@ class TodoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updated = Todo::find($id);
+        $updated->text = $request->input('text');
+        $updated->complete = $request->input('complete');
+        $updated->save();
     }
 
     /**
@@ -87,6 +91,8 @@ class TodoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Todo::find($id);
+        Todo::destroy($id);
+        return response()->json($data);
     }
 }

@@ -74,9 +74,10 @@ var TodoActions = {
   /**
    * Delete all the completed ToDos
    */
-  destroyCompleted: function() {
+  destroyCompleted: function(data) {
     AppDispatcher.dispatch({
-      actionType: TodoConstants.TODO_DESTROY_COMPLETED
+      actionType: TodoConstants.TODO_DESTROY_COMPLETED,
+      data:data
     });
   },
 
@@ -89,6 +90,14 @@ var TodoActions = {
   getTodoListSuccess: function(data) {
     AppDispatcher.dispatch({
       actionType: TodoConstants.GET_TODO_LIST_SUCCESS,
+      data:data
+    });
+  },
+
+
+  createTodoSuccess: function(data) {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_CREATE_SUCCESS,
       data:data
     });
   }

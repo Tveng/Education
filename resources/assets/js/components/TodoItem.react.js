@@ -31,7 +31,6 @@ var TodoItem = React.createClass({
    */
   render: function() {
     var todo = this.props.todo;
-
     var input;
     if (this.state.isEditing) {
       input =
